@@ -1,7 +1,7 @@
 import {EachMessagePayload, Kafka, LogEntry, logLevel, Consumer, Producer} from 'kafkajs'
 import {KAFKA_URL} from './env'
-import {logger} from "./logger";
-import {getLogger, getTraceId} from "./store";
+import {generateTraceId, logger} from "./logger";
+import {getLogger, getTraceId, runWithStore} from "./store";
 
 const consumers: Consumer[] = []
 const producers: Producer[] = []
@@ -130,9 +130,16 @@ export const createConsumer = async <A, R>(groupId: string, topic: string, handl
     await consumer.connect()
     consumers.push(consumer)
     await consumer.subscribe({topic, fromBeginning: true})
+    const consumerLogger = getLogger().child({
+        topic,
+    })
     await consumer.run({
         eachMessage: async (payload: EachMessagePayload) => {
-            await processEachMessage(payload, handler)
+            const traceId = payload?.message?.headers?.traceId?.toString() || generateTraceId()
+            await runWithStore({
+                baseLogger: consumerLogger,
+                traceId,
+            }, processEachMessage, payload, handler)
         }
     })
 }
