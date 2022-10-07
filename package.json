@@ -1,0 +1,34 @@
+{
+  "name": "fena-dev",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon | node ./node_modules/pino-pretty/bin.js",
+    "build": "next build && tsc --project tsconfig.server.json",
+    "start": "node dist/index.js",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/cache": "11.10.3",
+    "@emotion/react": "11.10.4",
+    "@emotion/server": "11.10.0",
+    "@emotion/styled": "11.10.4",
+    "@mui/material": "5.10.6",
+    "kafkajs": "2.2.0",
+    "next": "12.3.1",
+    "pino": "8.6.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.19",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "eslint": "^8.23.1",
+    "eslint-config-next": "^12.3.1",
+    "nodemon": "^2.0.20",
+    "pino-pretty": "^9.1.1",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.8.3"
+  }
+}
